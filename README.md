@@ -26,8 +26,8 @@
 * [ ] Cost Variance (%)
 * [ ] Planned Cost ($ M)
 * [ ] Projected/Actual Cost ($ M)
-* [ ] Updated Date
-* [ ] Updated Time
+* [x] Updated Date
+* [x] ~~Updated Time~~
 * [ ] Unique Project ID	
 * [ ] Others
 
@@ -44,8 +44,10 @@
 * Merge cuslters in column "Agency Project ID", "Project Name", "Project Description" (trailing space, different symbols, typos) 
 * Reconcile agency names against WIKIDATA
 * Different number types in ProjectID column(xxxx v.s. x,xxx), transfer cells in that column to number
-* Edit column 642, 643, 1864, 1865, 1866, 1867, removed the original Project Name, and realign the other columns
+* Edit column 642, 643, 1864, 1865, 1866, 1867, removed the original Project Name, and realign the other columns -- well, column index does not mean anything ....
 * Numbers in Lifecycle Cost column cells have ($m) appended
 * One row says "Entered in error", hence removed
 * Some numbers in Lifecyle are in a wrong scale (should be millions)
 * Merge Update Time to Update Date, and remove Update Time column since it is redundant
+* Wrong data, 2012 support service maint_12A has start data in 2011
+* Fill in missing data based on empirical predictor
