@@ -39,6 +39,5 @@
 * Merge one cluster in column "Investment Title" (adds commas to its name)
 * Remove rows that has same Project ID and other fields (by visual check) (*4 rows*)
 * Merge cuslters in column "Agency Project ID", "Project Name", "Project Description" (trailing space, different symbols, typos) 
-
-
+* Reconcile agency names against WIKIDATA
 
