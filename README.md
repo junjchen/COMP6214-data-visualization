@@ -2,10 +2,10 @@
 
 ## TODOs
 
-* [ ] Unique Investment Identifier
-* [ ] Business Case ID
-* [ ] Agency Code
-* [ ] Agency Name
+* [x] Unique Investment Identifier
+* [x] Business Case ID
+* [x] Agency Code
+* [x] Agency Name
 * [ ] Investment Title
 * [ ] Project ID
 * [ ] Agency Project ID
