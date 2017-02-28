@@ -1,5 +1,9 @@
 # COMP6214-data-visualization
 
+## Memo
+
+* It looks like Project ID is universally unique
+
 ## TODOs
 
 * [x] Unique Investment Identifier
@@ -11,11 +15,10 @@
 * [x] Agency Project ID
 * [x] Project Name
 * [x] Project Description
-* [ ] Start Date
-* [ ] Completion Date (B1)
-* [ ] Planned Project Completion Date (B2)
-* [ ] Projected/Actual
-* [ ] Project Completion Date (B2)
+* [x] Start Date
+* [x] Completion Date (B1)
+* [x] Planned Project Completion (B2)
+* [x] Projected/Actual Project Completion Date (B2)
 * [ ] Lifecycle Cost
 * [ ] Schedule Variance (in days)
 * [ ] Schedule Variance (%)
@@ -40,4 +43,9 @@
 * Remove rows that has same Project ID and other fields (by visual check) (*4 rows*)
 * Merge cuslters in column "Agency Project ID", "Project Name", "Project Description" (trailing space, different symbols, typos) 
 * Reconcile agency names against WIKIDATA
-
+* Different number types in ProjectID column(xxxx v.s. x,xxx), transfer cells in that column to number
+* Edit column 642, 643, 1864, 1865, 1866, 1867, removed the original Project Name, and realign the other columns
+* Numbers in Lifecycle Cost column cells have ($m) appended
+* One row says "Entered in error", hence removed
+* Some numbers in Lifecyle are in a wrong scale (should be millions)
+* Merge Update Time to Update Date, and remove Update Time column since it is redundant
