@@ -6,11 +6,11 @@
 * [x] Business Case ID
 * [x] Agency Code
 * [x] Agency Name
-* [ ] Investment Title
-* [ ] Project ID
-* [ ] Agency Project ID
-* [ ] Project Name
-* [ ] Project Description
+* [x] Investment Title
+* [x] Project ID
+* [x] Agency Project ID
+* [x] Project Name
+* [x] Project Description
 * [ ] Start Date
 * [ ] Completion Date (B1)
 * [ ] Planned Project Completion Date (B2)
@@ -30,10 +30,15 @@
 
 ## Problems and fix
 
-* Remove header(disclaimer)
+* Changed linebreaks from LF to CRLF, to compile with CSV definition (RFC 4180)
+* Remove header (disclaimer)
 * Align mismatched columns
-* Remove empty rows (17)
-* Remove the "Total" rows (26)
-* Merge clustered cells in column "Agency Name" (trailing spaces, typos, different terminologies, ambiguous determined by "Agency Code")
-* 
+* Remove empty rows (*17 rows*)
+* Remove the "Total" rows (*26 rows*)
+* Merge clustered cells in column "Agency Name" (trailing space, typos, different terminologies, ambiguous determined by "Agency Code")
+* Merge one cluster in column "Investment Title" (adds commas to its name)
+* Remove rows that has same Project ID and other fields (by visual check) (*4 rows*)
+* Merge cuslters in column "Agency Project ID", "Project Name", "Project Description" (trailing space, different symbols, typos) 
+
+
 
