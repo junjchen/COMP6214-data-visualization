@@ -1,4 +1,4 @@
-# COMP6214-data-visualization
+# COMP6214 - Open Data Innovation coursework
 
 ## Memo
 
