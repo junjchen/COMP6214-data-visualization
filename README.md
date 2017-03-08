@@ -1,35 +1,8 @@
 # COMP6214 - Open Data Innovation coursework
 
-## Memo
+## Notes
 
 * It looks like Project ID is universally unique
-
-## TODOs
-
-* [x] Unique Investment Identifier
-* [x] Business Case ID
-* [x] Agency Code
-* [x] Agency Name
-* [x] Investment Title
-* [x] Project ID
-* [x] Agency Project ID
-* [x] Project Name
-* [x] Project Description
-* [x] Start Date
-* [x] Completion Date (B1)
-* [x] Planned Project Completion (B2)
-* [x] Projected/Actual Project Completion Date (B2)
-* [ ] Lifecycle Cost
-* [ ] Schedule Variance (in days)
-* [ ] Schedule Variance (%)
-* [ ] Cost Variance ($ M)
-* [ ] Cost Variance (%)
-* [ ] Planned Cost ($ M)
-* [ ] Projected/Actual Cost ($ M)
-* [x] Updated Date
-* [x] ~~Updated Time~~
-* [ ] Unique Project ID	
-* [ ] Others
 
 ## Problems and fix
 
