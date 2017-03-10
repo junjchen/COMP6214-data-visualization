@@ -1,8 +1,13 @@
 body {
     background: #efefef;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: 'Roboto','Helvetica','Arial',sans-serif
 }
-.donut__chart {
+
+.title .material-icons {
+    font-size: 2.5rem;
+}
+
+.donut {
     position: relative;
 }
 
@@ -12,23 +17,12 @@ body {
 
 .donut__explanation{
     position: absolute;
-    top: 150px;
-    height: 200px;
-    left: 160px;
-    width: 185px;
+    top: 185px;
+    height: 250px;
+    left: 185px;
+    width: 250px;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-.donut__entities {
-    color: #333;
-    font-size: 1rem;
-}
-
-.donut__amount {
-    color: #333;
-    font-size: 1.2rem;
-    padding: 20px 0 0 0;
 }

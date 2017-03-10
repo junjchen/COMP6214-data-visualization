@@ -1,3 +1,3 @@
 import donutFactory from './donut'
 
-donutFactory('.donut', 500, 500)
+donutFactory('.donut', 620, 620)

@@ -34050,7 +34050,7 @@ var _donut2 = _interopRequireDefault(_donut);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _donut2.default)('.donut', 500, 500);
+(0, _donut2.default)('.donut', 620, 620);
 
 /***/ })
 /******/ ]);
