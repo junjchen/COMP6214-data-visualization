@@ -17302,19 +17302,24 @@ var factory = function factory(selector, width, height) {
         });
     };
 
-    var mouseleave = function mouseleave() {}
-    //entitiesText.text('') amountText.text('')
+    var mouseleave = function mouseleave() {
+        entitiesText.text('');
+        amountText.text('');
 
+        chartRoot.selectAll('path').on('mouseover', null);
+
+        chartRoot.selectAll('path').transition().duration(450).style('opacity', 1).on('end', function () {
+            return chartRoot.selectAll('path').on('mouseover', mouseover);
+        });
+    };
 
     // draw
-    ;var svg = chartRoot.append('svg').attr('width', width).attr('height', height);
+    var svg = chartRoot.append('svg').attr('width', width).attr('height', height);
 
     var g = svg.append('g').attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
-    var text = svg.append('text').attr('class', 'explanation').text('HELLO');
-
     g.selectAll('path').data(partition(root).descendants()).enter().append('path').attr('d', arc).style('fill', function (x) {
-        return color((x.children ? x : x.parent).data.name);
+        return x.depth === 0 ? 'transparent' : color((x.children ? x : x.parent).data.name);
     }).on('mouseover', mouseover);
 
     g.on('mouseleave', mouseleave);
