@@ -1,0 +1,33 @@
+{
+  "name": "monic",
+  "version": "1.0.0",
+  "description": "## Notes",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server -d",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/junjchen/monic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/junjchen/monic/issues"
+  },
+  "homepage": "https://github.com/junjchen/monic#readme",
+  "dependencies": {
+    "d3": "^4.7.1",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.4.0",
+    "babel-preset-env": "^1.2.1",
+    "dsv-loader": "^2.0.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
+  }
+}

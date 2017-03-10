@@ -1,0 +1,33 @@
+body {
+    background: #efefef;
+}
+.donut__chart {
+    position: relative;
+}
+
+.donut__chart svg path {
+    stroke: #fff;
+}
+
+.donut__explanation{
+    position: absolute;
+    top: 150px;
+    height: 200px;
+    left: 160px;
+    width: 185px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.donut__entities {
+    color: #fff;
+    font-size: 1rem;
+}
+
+.donut__amount {
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 20px 0 0 0;
+}

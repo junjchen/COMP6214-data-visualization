@@ -4,6 +4,12 @@
 
 * It looks like Project ID is universally unique
 
+## Visualization ideas
+
+* Ring chart illustrates investment amnout (Lifecycle cost, planned cost, projected cost) on different agencies / titles 
+* Filter the ring chart by agency / title
+* When one investment is selected, show investment details (yet to be decided how to illustrate)
+
 ## Problems and fix
 
 * Changed linebreaks from LF to CRLF, to compile with CSV definition (RFC 4180)
