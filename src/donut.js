@@ -109,11 +109,22 @@ const factory = (selector, width, height) => {
             .style('opacity', x => x.depth === 0 || _.includes(sequence, x)
                 ? 1
                 : 0.3)
-
     }
 
     const mouseleave = () => {
-        //entitiesText.text('') amountText.text('')
+        entitiesText.text('')
+        amountText.text('')
+
+        chartRoot
+            .selectAll('path')
+            .on('mouseover', null);
+
+        chartRoot
+            .selectAll('path')
+            .transition()
+            .duration(450)
+            .style('opacity', 1)
+            .on('end', () => chartRoot.selectAll('path').on('mouseover', mouseover))
     }
 
     // draw
@@ -126,20 +137,17 @@ const factory = (selector, width, height) => {
         .append('g')
         .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
 
-    const text = svg
-        .append('text')
-        .attr('class', 'explanation')
-        .text('HELLO')
-
     g
         .selectAll('path')
         .data(partition(root).descendants())
         .enter()
         .append('path')
         .attr('d', arc)
-        .style('fill', x => color((x.children
-            ? x
-            : x.parent).data.name))
+        .style('fill', x => x.depth === 0
+            ? 'transparent'
+            : color((x.children
+                ? x
+                : x.parent).data.name))
         .on('mouseover', mouseover)
 
     g.on('mouseleave', mouseleave)

@@ -1,5 +1,6 @@
 body {
     background: #efefef;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .donut__chart {
     position: relative;
@@ -22,12 +23,12 @@ body {
 }
 
 .donut__entities {
-    color: #fff;
+    color: #333;
     font-size: 1rem;
 }
 
 .donut__amount {
-    color: #fff;
+    color: #333;
     font-size: 1.2rem;
     padding: 20px 0 0 0;
 }
