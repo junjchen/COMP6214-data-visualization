@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import * as d3 from 'd3'
 import Rx from 'rx'
+import $ from 'jquery'
 import EventEmitter from 'events'
 import raw from './data'
 
@@ -62,38 +63,21 @@ const loadData = group => {
     return ret
 }
 
-const factory = (selector, width, height) => {
+const factory = () => {
 
     // load and convert data
     const data = loadData('aname')
     const root = d3.hierarchy(data)
     root.sum(x => x.size)
 
-    // definitions
-    const chartRoot = d3.select(selector + '__chart')
-    const entitiesText = d3.select(selector + '__entities')
-    const amountText = d3.select(selector + '__amount')
+    // selections
+    const chartRoot = d3.select('.donut__chart')
+    const entitiesText = d3.select('.donut__entities')
+    const amountText = d3.select('.donut__amount')
 
-    const radius = (Math.min(width, height) / 2) - 10
-    const formatNumber = d3.format('.2');
-    const x = d3
-        .scaleLinear()
-        .range([
-            0, 2 * Math.PI
-        ]);
-    const y = d3
-        .scaleSqrt()
-        .range([0, radius]);
+    const $chartExplanation = $('.donut__explanation')
 
-    const color = d3.scaleOrdinal(d3.schemeCategory20b)
-    const partition = d3.partition()
-    const arc = d3
-        .arc()
-        .startAngle(d => Math.max(0, Math.min(2 * Math.PI, x(d.x0))))
-        .endAngle(d => Math.max(0, Math.min(2 * Math.PI, x(d.x1))))
-        .innerRadius(d => Math.max(0, y(d.y0)))
-        .outerRadius(d => Math.max(0, y(d.y1)))
-
+    // event handlers
     const getAncestors = node => {
         const path = []
         let current = node
@@ -104,7 +88,6 @@ const factory = (selector, width, height) => {
         return path
     }
 
-    // event handlers
     const mouseover = x => {
 
         emitter.emit('mouseover', x)
@@ -139,31 +122,6 @@ const factory = (selector, width, height) => {
             .on('end', () => chartRoot.selectAll('path').on('mouseover', mouseover))
     }
 
-    // draw
-    const svg = chartRoot
-        .append('svg')
-        .attr('width', width)
-        .attr('height', height)
-
-    const g = svg
-        .append('g')
-        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
-
-    const d = g
-        .selectAll('path')
-        .data(partition(root).descendants())
-        .enter()
-        .append('path')
-        .attr('d', arc)
-        .style('fill', x => x.depth === 0
-            ? 'transparent'
-            : color((x.children
-                ? x
-                : x.parent).data.name))
-        .on('mouseover', mouseover)
-
-    g.on('mouseleave', mouseleave)
-
     const mouseoverStream = Rx
         .Observable
         .fromEvent(emitter, 'mouseover')
@@ -172,7 +130,66 @@ const factory = (selector, width, height) => {
         .Observable
         .fromEvent(emitter, 'mouseleave')
 
-    return {mouseoverStream, mouseleaveStream}
+    return {
+        draw: size => {
+
+            // clean
+            chartRoot.html('')
+
+            // definitions
+            const radius = (size / 2)
+            const formatNumber = d3.format('.2');
+            const x = d3
+                .scaleLinear()
+                .range([
+                    0, 2 * Math.PI
+                ]);
+            const y = d3
+                .scaleSqrt()
+                .range([0, radius]);
+
+            const color = d3.scaleOrdinal(d3.schemeCategory20b)
+            const partition = d3.partition()
+            const arc = d3
+                .arc()
+                .startAngle(d => Math.max(0, Math.min(2 * Math.PI, x(d.x0))))
+                .endAngle(d => Math.max(0, Math.min(2 * Math.PI, x(d.x1))))
+                .innerRadius(d => Math.max(0, y(d.y0)))
+                .outerRadius(d => Math.max(0, y(d.y1)))
+
+            const w = 2 * y(0.333) / 1.414
+            const offset = radius - w / 2
+            $chartExplanation.css({top: offset, left: offset, width: w, height: w})
+
+            // draw
+            const svg = chartRoot
+                .append('svg')
+                .attr('width', size)
+                .attr('height', size)
+
+            const g = svg
+                .append('g')
+                .attr('transform', 'translate(' + size / 2 + ',' + size / 2 + ')')
+
+            const d = g
+                .selectAll('path')
+                .data(partition(root).descendants())
+                .enter()
+                .append('path')
+                .attr('d', arc)
+                .style('fill', x => x.depth === 0
+                    ? 'transparent'
+                    : color((x.children
+                        ? x
+                        : x.parent).data.name))
+                .on('mouseover', mouseover)
+
+            g.on('mouseleave', mouseleave)
+
+        },
+        mouseoverStream,
+        mouseleaveStream
+    }
 
 }
 

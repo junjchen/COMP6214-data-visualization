@@ -16,10 +16,6 @@ body {
 
 .donut__explanation{
     position: absolute;
-    top: 185px;
-    height: 250px;
-    left: 185px;
-    width: 250px;
     text-align: center;
     display: flex;
     flex-direction: column;
