@@ -1,6 +1,10 @@
 import _ from 'lodash'
 import * as d3 from 'd3'
+import Rx from 'rx'
+import EventEmitter from 'events'
 import raw from './data'
+
+const emitter = new EventEmitter()
 
 const loadData = group => {
 
@@ -30,7 +34,9 @@ const loadData = group => {
             .groupBy(group)
             .map((v, k) => ({
                 name: k,
-                children: _(v).map(({invtitle, lcost}) => ({name: invtitle, size: lcost})).value()
+                children: _(v)
+                    .map(x => ({name: x.invtitle, size: x.lcost, raw: x}))
+                    .value()
             }))
             .sortBy(({children}) => _.sum(_.map(children, 'size')))
             .reverse()
@@ -100,6 +106,9 @@ const factory = (selector, width, height) => {
 
     // event handlers
     const mouseover = x => {
+
+        emitter.emit('mouseover', x)
+
         entitiesText.text(x.data.name)
         amountText.text(d3.format(',.2f')(x.value) + ' (' + d3.format('.2%')(x.value / root.value) + ')')
 
@@ -112,6 +121,9 @@ const factory = (selector, width, height) => {
     }
 
     const mouseleave = () => {
+
+        emitter.emit('mouseleave')
+
         entitiesText.text('')
         amountText.text('')
 
@@ -137,7 +149,7 @@ const factory = (selector, width, height) => {
         .append('g')
         .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')')
 
-    g
+    const d = g
         .selectAll('path')
         .data(partition(root).descendants())
         .enter()
@@ -151,6 +163,17 @@ const factory = (selector, width, height) => {
         .on('mouseover', mouseover)
 
     g.on('mouseleave', mouseleave)
+
+    const mouseoverStream = Rx
+        .Observable
+        .fromEvent(emitter, 'mouseover')
+
+    const mouseleaveStream = Rx
+        .Observable
+        .fromEvent(emitter, 'mouseleave')
+
+    return {mouseoverStream, mouseleaveStream}
+
 }
 
 export default factory

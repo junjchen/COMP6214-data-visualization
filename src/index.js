@@ -1,3 +1,6 @@
+import _ from 'lodash'
+import $ from 'jquery'
 import donutFactory from './donut'
+import {lookupKey} from './data'
 
-donutFactory('.donut', 620, 620)
+const {mouseoverStream, mouseleaveStream} = donutFactory('.donut', 620, 620)

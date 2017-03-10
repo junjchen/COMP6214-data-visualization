@@ -55,3 +55,5 @@ const normalize = (res, value, key) => {
 const result = data.map(x => _.reduce(x, normalize, {}))
 
 export default result
+
+export const lookupKey = _.invert(dict)

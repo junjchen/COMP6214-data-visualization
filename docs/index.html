@@ -8,7 +8,7 @@
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
-    <link rel="stylesheet" href="./assets/normalize.min.css" />
+    <link rel="stylesheet" href="./assets/normalize.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="./assets/material.min.css">
     <link rel="stylesheet" href="./assets/main.css" />
@@ -23,12 +23,24 @@
         </header>
         <main class="mdl-layout__content">
             <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--12-col donut">
+                <div class="mdl-cell mdl-cell--6-col donut">
                     <div class="donut__explanation">
                         <h5 class="donut__entities"></h5>
                         <h4 class="donut__amount"></h4>
                     </div>
                     <div class="donut__chart"></div>
+                </div>
+                <div class="mdl-cell mdl-cell--6-col">
+                    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp table">
+                        <thead>
+                            <tr>
+                                <th class="mdl-data-table__cell--non-numeric">PROPERTY</th>
+                                <th>VALUE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
