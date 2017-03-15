@@ -35,3 +35,25 @@ main {
     font-size: 1rem;
     font-weight: 700;
 }
+
+.timeline {
+    margin-top: 45px;
+}
+
+.timeline .date {
+    font-size: 0.8em;
+}
+
+.timeline svg {
+    overflow: visible;
+    padding-top: 60px;
+}
+
+.timeline text {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.hide {
+    opacity: 0
+}

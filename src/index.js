@@ -8,6 +8,9 @@ import {
 import {
     draw as drawBars
 } from './bar'
+import {
+    draw as drawTimeline
+} from './timeline'
 import data, {
     lookupKey
 } from './data'
@@ -36,6 +39,7 @@ const global = _.reduce(data, (ret, x) => ({
 
 eventStreams.mouseleave.subscribe(() => {
     drawBars(global, 500, 150)
+    $('.agency').text('')
     $('.name').text(`Total ${data.length} Investments`)
     $('.id').text('')
 })
@@ -53,6 +57,8 @@ eventStreams.mouseover.subscribe(x => {
 
     if (x.depth === 0) {
         drawBars(global, 500, 150)
+        drawTimeline()
+        $('.agency').text('')
         $('.name').text(`Total ${data.length} Investments`)
         $('.id').text('')
         return
@@ -64,10 +70,15 @@ eventStreams.mouseover.subscribe(x => {
             uinvid
         } = x.data.raw
         drawBars(x.data.raw, 500, 150)
+        $('.agency').text(x.parent.data.name)
         $('.name').text(`${invtitle}`)
-        $('.id').text(`${uinvid}`)
+        $('.id').text(`Case ID: ${uinvid}`)
+
+        drawTimeline(x.data.raw, 650, 240)
     } else if (x.data.raws) {
         drawBars(aggregate(x.data.raws), 500, 150)
+        drawTimeline()
+        $('.agency').text(x.parent.data.name)
         $('.name').text(`Other ${x.data.raws.length} Investments`)
         $('.id').text('')
     } else {
@@ -95,6 +106,8 @@ eventStreams.mouseover.subscribe(x => {
             plancost: 0
         })
         drawBars(aggregated, 500, 150)
+        drawTimeline()
+        $('.agency').text('')
         $('.name').text(`${aggregated.count} investments in ${x.data.name}`)
         $('.id').text('')
     }

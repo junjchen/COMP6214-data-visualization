@@ -46,7 +46,7 @@ const normalize = (res, value, key) => {
     if (datatypes[key] === 'number') {
         value = _.round(+value, 2)
     } else if (datatypes[key] === 'date') {
-        value = new Date(value)
+        value = value ? new Date(value) : undefined
     }
     res[key] = value
     return res
