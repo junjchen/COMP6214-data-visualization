@@ -23,9 +23,6 @@ filterChange.subscribe(x => {
     redrawDonut(x.target.value)
 })
 
-// initial draw
-redrawDonut('lcost')
-
 // draw bar chart
 const global = _.reduce(data, (ret, x) => ({
     lcost: ret.lcost + x.lcost,
@@ -37,8 +34,16 @@ const global = _.reduce(data, (ret, x) => ({
     plancost: 0
 })
 
+// initial draw
+redrawDonut('lcost')
+drawBars(global, 500, 150)
+$('.agency').text('')
+$('.name').text(`Total ${data.length} Investments`)
+$('.id').text('')
+
 eventStreams.mouseleave.subscribe(() => {
     drawBars(global, 500, 150)
+    drawTimeline()
     $('.agency').text('')
     $('.name').text(`Total ${data.length} Investments`)
     $('.id').text('')

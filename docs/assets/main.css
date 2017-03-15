@@ -57,3 +57,9 @@ main {
 .hide {
     opacity: 0
 }
+
+.help {
+    padding: 1rem;
+    line-height: 1.15;
+    background-color: #dedede;
+}
