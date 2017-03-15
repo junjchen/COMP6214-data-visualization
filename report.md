@@ -1,7 +1,12 @@
 # Report for COMP6214 Open Data Course Work 1
 
-## Cleaning data
+## HOW to RUN and the submission
+As it is not viable to upload a single HTML of the app (It can be done technically, but it will invloves a lot of cumbersome work that is not necessary), I uploaded a zip file instead, to run the app from the downloaded file, do the following
+1. unzip file
+2. go the ./docs folder in the expanded zip file
+3. open index.html
 
+## Cleaning data
 1. File format error. CSV file should use CRLF as linebreak signals as it is defined in RFC4180, the given file uses LF only. *Fixed by change all line breaks to CRLF*
 2. Unnecessary information removal. Unnecessary header and total rows are found in the given CSV file, which has no value. *Fixed by remove unnecessary rows*
 3. Empty rows removal. *Fixed by remove empty rows*
@@ -37,7 +42,7 @@ The knwoledge can be acuired by looking at the bar chart on the right panel, tha
 #### interested in how a project's schedule goes, whether it finishes on time, earlier or delayed
 The knowledge can be acuired by lokoing att the timeline bar chart on the right panel, to compare the length of the bar representing estimation and actual project time
 
-### How to host
+### How to host and develop (refere to the first part if only running the app is interested, not hosting and redevelop)
 - Install nodejs and git if haven't
 - Clone git repo `git clone https://github.com/junjchen/monic`
 - Run command `npm install` in the repo to pull all the dependencies
