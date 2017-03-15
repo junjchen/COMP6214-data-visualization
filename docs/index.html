@@ -9,35 +9,39 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
     <link rel="stylesheet" href="./assets/normalize.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="./assets/material.min.css">
     <link rel="stylesheet" href="./assets/main.css" />
 </head>
 
 <body>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <header class="mdl-layout__header">
-            <div class="mdl-layout__header-row">
-                <span class="mdl-layout-title title"><i class="material-icons">dashboard</i></span>
+    <header>
+    </header>
+    <main>
+        <div class="left">
+            <div class="filter">
+                <h1>INVESTMENTS BY AGENCY</h1>
+                Display using <select class="prop_filter">
+                <option value="lcost" selected>Lifecycle Cost</option>
+                <option value="plancost">Planned Cost</option>
+                <option value="projcost">Projected/Actual Cost</option>
+                </select>
             </div>
-        </header>
-        <main class="mdl-layout__content">
-            <div class="mdl-grid">
-                <div class="mdl-cell mdl-cell--8-col donut">
-                    <div class="donut__explanation">
-                        <h5 class="donut__entities"></h5>
-                        <h4 class="donut__amount"></h4>
-                    </div>
-                    <div class="donut__chart"></div>
+            <div class="donut">
+                <div class="donut__explanation">
+                    <h3 class="donut__entities"></h3>
+                    <h2 class="donut__amount"></h2>
                 </div>
-                <div class="mdl-cell mdl-cell--4-col">
-                </div>
+                <div class="donut__chart"></div>
             </div>
-        </main>
-    </div>
+        </div>
+        <div class="right">
+            <h2 class="name"></h2>
+            <h3 class="id"></h3>
+            <div class="bar"></div>
+            <div class="timeline"></div>
+        </div>
+    </main>
 </body>
 
-<script defer src="./assets/material.min.js"></script>
 <script src="./assets/bundle.js"></script>
 
 </html>

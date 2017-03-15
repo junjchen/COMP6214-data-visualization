@@ -5,75 +5,82 @@ import $ from 'jquery'
 import EventEmitter from 'events'
 import raw from './data'
 
-const emitter = new EventEmitter()
+// selections
+const chartRoot = d3.select('.donut__chart')
+const entitiesText = d3.select('.donut__entities')
+const amountText = d3.select('.donut__amount')
+const $chartExplanation = $('.donut__explanation')
 
-const loadData = group => {
+// event streams
+const emitter = new EventEmitter()
+const eventStreams = {
+    mouseover: Rx.Observable.fromEvent(emitter, 'mouseover'),
+    mouseleave: Rx.Observable.fromEvent(emitter, 'mouseleave')
+}
+
+// util functions
+const loadData = (group, prop) => {
 
     const sort = nodes => _.sortBy(nodes, x => {
-        if (x.size) 
+        if (x.size)
             return -x.size
-        if (x.children) 
+        if (x.children)
             return -_.sum(_.map(x.children, 'size'))
     })
 
     const combineSmallNodes = nodes => {
         const [bigEnough,
-            tooSmall] = _.partition(nodes, x => x.size > 200)
+            tooSmall
+        ] = _.partition(nodes, x => x.size > 100)
         return [
             ...bigEnough, {
-                name: 'Others',
-                size: _.sum(_.map(tooSmall, 'size'))
+                name: `Other ${tooSmall.length}`,
+                size: _.sum(_.map(tooSmall, 'size')),
+                raws: tooSmall
             }
         ]
     }
 
-    const tree = {
-        name: 'Total',
-        children: _(raw)
-            .groupBy(group)
-            .map((v, k) => ({
-                name: k,
-                children: _(v)
-                    .map(x => ({name: x.invtitle, size: x.lcost, raw: x}))
-                    .value()
-            }))
-            .sortBy(({children}) => _.sum(_.map(children, 'size')))
-            .reverse()
-            .value()
-    }
+    const nodes = _(raw)
+        .groupBy(group)
+        .map((v, k) => ({
+            name: k,
+            children: _(v)
+                .map(x => ({
+                    name: x.invtitle,
+                    size: x[prop],
+                    raw: x
+                }))
+                .value()
+        }))
+        .sortBy(({
+            children
+        }) => _.sum(_.map(children, 'size')))
+        .reverse()
+        .value()
 
     const [firstChunk,
-        secondChunk] = _.chunk(tree.children, 15)
+        secondChunk
+    ] = _.chunk(nodes, 18)
 
-    const ret = {
-        name: 'Total',
+    const tree = {
+        name: 'TOTAL',
         children: [
             ..._.map(firstChunk, x => {
                 x.children = combineSmallNodes(x.children)
                 return x
             }), {
-                name: 'Others',
+                name: `Other ${secondChunk.length} Agencies`,
                 children: combineSmallNodes(_.flatMap(secondChunk, 'children'))
             }
         ]
     }
 
-    return ret
+    const root = d3.hierarchy(tree)
+    root.sum(x => x.size)
+    return root
 }
 
-// load and construct data
-const data = loadData('aname')
-const root = d3.hierarchy(data)
-root.sum(x => x.size)
-
-// selections
-const chartRoot = d3.select('.donut__chart')
-const entitiesText = d3.select('.donut__entities')
-const amountText = d3.select('.donut__amount')
-
-const $chartExplanation = $('.donut__explanation')
-
-// event handlers
 const getAncestors = node => {
     const path = []
     let current = node
@@ -84,13 +91,15 @@ const getAncestors = node => {
     return path
 }
 
-const draw = size => {
+// draw
+const draw = (group, prop, size) => {
     // clean
     chartRoot.html('')
 
+    const root = loadData(group, prop)
+
     // definitions
     const radius = (0.8 * size / 2)
-    const formatNumber = d3.format('.2')
     const x = d3
         .scaleLinear()
         .range([
@@ -100,11 +109,15 @@ const draw = size => {
         .scaleSqrt()
         .range([0, radius])
     const colors = d3.scaleOrdinal(d3.schemeCategory20b)
-    const color = x => x.depth === 0
-        ? 'transparent'
-        : colors((x.children
-            ? x
-            : x.parent).data.name)
+    const color = x => {
+        if (x.depth === 0)
+            return 'transparent'
+        if (x.children) {
+            return colors(x.data.name)
+        } else {
+            return colors(x.parent.data.name)
+        }
+    }
     const partition = d3.partition()
     const arc = d3
         .arc()
@@ -116,7 +129,12 @@ const draw = size => {
     // center text box
     const w = 2 * y(0.333) / 1.414
     const offset = (size - w) / 2
-    $chartExplanation.css({top: offset, left: offset, width: w, height: w})
+    $chartExplanation.css({
+        top: offset,
+        left: offset,
+        width: w,
+        height: w
+    })
 
     // draw
     const svg = chartRoot
@@ -126,53 +144,53 @@ const draw = size => {
 
     const g = svg
         .append('g')
-        .style('cursor', 'pointer')
-        .attr('transform', 'translate(' + size / 2 + ',' + size / 2 + ')')
+        .attr('transform', `translate(${size / 2 }, ${size / 2})`)
 
     const d = g
         .selectAll('path')
         .data(partition(root).descendants())
         .enter()
         .append('path')
+        .style('cursor', x => x.depth === 0 ? 'default' : 'pointer')
         .attr('d', arc)
         .style('fill', color)
         .on('mouseover', x => emitter.emit('mouseover', x))
 
-    g.on('mouseleave', () => emitter.emit('mouseleave'))
+    g.on('mouseleave', () => emitter.emit('mouseleave', root))
+
+    // event handlers
+    let disableMouseOver = false // not good, dropin fix
+    const defaultEntiesText = root.data.name
+    const defaultAmountText = '$' + d3.format(',.2f')(root.value) + 'M'
+    entitiesText.text(defaultEntiesText)
+    amountText.text(defaultAmountText)
+    const onMouseover = x => {
+        entitiesText.text(x.data.name)
+        amountText.text('$' + d3.format(',.2f')(x.value) + 'M (' + d3.format('.2%')(x.value / root.value) + ')')
+        const sequence = getAncestors(x)
+        chartRoot
+            .selectAll('path')
+            .style('opacity', x => x.depth === 0 || _.includes(sequence, x) ?
+                1 :
+                0.3)
+    }
+    const onMouseleave = () => {
+        entitiesText.text(defaultEntiesText)
+        amountText.text(defaultAmountText)
+        disableMouseOver = true
+        chartRoot
+            .selectAll('path')
+            .transition()
+            .duration(250)
+            .style('opacity', 1)
+            .on('end', () => disableMouseOver = false)
+    }
+
+    eventStreams.mouseover.filter(x => x.depth !== 0).subscribe(onMouseover)
+    eventStreams.mouseleave.subscribe(onMouseleave)
 }
 
-const mouseoverStream = Rx
-    .Observable
-    .fromEvent(emitter, 'mouseover')
-
-const mouseleaveStream = Rx
-    .Observable
-    .fromEvent(emitter, 'mouseleave')
-
-// eat my own dog food
-mouseoverStream.subscribe(x => {
-    entitiesText.text(x.data.name)
-    amountText.text(d3.format(',.2f')(x.value) + ' (' + d3.format('.2%')(x.value / root.value) + ')')
-    const sequence = getAncestors(x)
-    chartRoot
-        .selectAll('path')
-        .style('opacity', x => x.depth === 0 || _.includes(sequence, x)
-            ? 1
-            : 0.3)
-})
-
-mouseleaveStream.subscribe(() => {
-    entitiesText.text('')
-    amountText.text('')
-    chartRoot
-        .selectAll('path')
-        .on('mouseover', null)
-    chartRoot
-        .selectAll('path')
-        .transition()
-        .duration(450)
-        .style('opacity', 1)
-        .on('end', () => chartRoot.selectAll('path').on('mouseover', mouseover))
-})
-
-export {draw, mouseoverStream, mouseleaveStream}
+export {
+    draw,
+    eventStreams
+}

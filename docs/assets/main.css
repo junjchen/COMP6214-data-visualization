@@ -2,8 +2,13 @@ body {
     background: #efefef;
 }
 
-.title .material-icons {
-    font-size: 2.5rem;
+main {
+    display: flex;
+    flex-direction: row;
+}
+
+.filter {
+    margin-left: 75px;
 }
 
 .donut {
@@ -14,10 +19,19 @@ body {
     stroke: #fff;
 }
 
-.donut__explanation{
+.donut__explanation {
     position: absolute;
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.bar svg {
+    overflow: visible;
+}
+
+.bar text {
+    font-size: 1rem;
+    font-weight: 700;
 }

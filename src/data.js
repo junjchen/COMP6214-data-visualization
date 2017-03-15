@@ -44,7 +44,7 @@ const datatypes = {
 const normalize = (res, value, key) => {
     key = dict[key] || key
     if (datatypes[key] === 'number') {
-        value = _.round(+ value, 2)
+        value = _.round(+value, 2)
     } else if (datatypes[key] === 'date') {
         value = new Date(value)
     }
@@ -56,4 +56,4 @@ const result = data.map(x => _.reduce(x, normalize, {}))
 
 export default result
 
-export const lookupKey = _.invert(dict)
+export const lookupKey = x => _.invert(dict)[x]
